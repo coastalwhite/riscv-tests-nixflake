@@ -1,0 +1,13 @@
+diff --git a/mt/Makefile b/mt/Makefile
+index b45e551..034fb6f 100644
+--- a/mt/Makefile
++++ b/mt/Makefile
+@@ -75,7 +75,7 @@ bmarks = $(bmarks_vvadd) $(bmarks_matmul)
+ # Build rules
+ #--------------------------------------------------------------------
+ 
+-RISCV_PREFIX=riscv$(XLEN)-unknown-elf-
++RISCV_PREFIX=riscv$(XLEN)-none-elf-
+ RISCV_GCC = $(RISCV_PREFIX)gcc
+ RISCV_GCC_OPTS = -std=gnu99 -O2 -ffast-math
+ RISCV_LINK = $(RISCV_GCC) -T $(common)/test.ld $(incs)

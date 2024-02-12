@@ -20,6 +20,43 @@ following to your flake's inputs.
 riscv-tests.url = "github:coastalwhite/riscv-tests-nixflake";
 ```
 
+## Example
+
+If you want to make a `devShell` that contains the build artifacts for
+[riscv-tests], you can do something similar to the following.
+
+```nix
+# flake.nix
+{
+  description = "RISC-V Tests devShell";
+
+  inputs = {
+      nixpkgs.url = "github:NixOS/nixpkgs";
+      flake-utils.url = "github:numtide/flake-utils";
+
+      riscv-tests.url = "github:coastalwhite/riscv-tests-nixflake";
+  };
+
+  outputs = { self, nixpkgs, flake-utils, riscv-tests }:
+    flake-utils.lib.eachDefaultSystem (system: let
+        pkgs = import nixpkgs { inherit system; };
+        in rec {
+            devShells.default = pkgs.mkShell {
+				shellHook = ''
+                    export RISCV_TESTS="${riscv-tests.packages."${system}".default}"
+				'';
+			};
+        });
+}
+```
+
+You can then list all the tests:
+
+```bash
+nix develop
+ls $RISCV_TESTS/share/riscv-tests/isa
+```
+
 [Nix Flake]: https://nixos.wiki/wiki/Flakes
 [riscv-tests]: https://github.com/riscv-software-src/riscv-tests
 [nix installation]: https://nixos.wiki/wiki/Nix_Installation_Guide
